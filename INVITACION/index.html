@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Una invitación para ti</title>
+  <style>
+    :root {
+      --primary-color: #e6526e;
+      --bg-color: #fde8ed;
+      --card-bg: #ffffff;
+      --text-color: #4a4a4a;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: var(--primary-color);
+      font-size: 26px;
+      margin-bottom: 5px;
+    }
+
+    p.subtitle {
+      color: #777;
+      margin-top: 0;
+      font-size: 14px;
+    }
+
+    .card-media {
+      margin: 20px 0;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      background: #fafafa;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .next-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .next-btn:hover {
+      background-color: #d43f5c;
+      transform: translateY(-2px);
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 30px;
+      min-height: 80px;
+    }
+
+    .btn-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-yes {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-no {
+      background-color: #e6526e;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .avatar-img {
+      width: 45px;
+      height: 45px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .food-item {
+      border: 2px solid #eee;
+      border-radius: 10px;
+      padding: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .food-item.selected {
+      border-color: var(--primary-color);
+      background-color: #fff0f3;
+    }
+
+    .food-item img {
+      width: 100%;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .food-item span {
+      display: block;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .summary-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .summary-item {
+      margin-bottom: 10px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: #888;
+      display: block;
+    }
+
+    .summary-value {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+    }
+
+    .time-block {
+      background: var(--primary-color);
+      color: white;
+      padding: 8px;
+      border-radius: 8px;
+      width: 50px;
+    }
+
+    .time-block .num {
+      font-size: 18px;
+      font-weight: bold;
+      display: block;
+    }
+
+    .time-block .label {
+      font-size: 10px;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 150px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUDIO CON NOMBRE LIMPIO -->
+  <audio id="crying-audio" src="risa.mpeg" preload="auto"></audio>
+
+  <!-- PASO 1 -->
+  <div id="step-1" class="container">
+    <h1>HOLAAA</h1>
+    <p class="subtitle">Te llegó un correo!!! 📩</p>
+    <div class="card-media">
+      <img src="snop.jpeg" alt="Snoopy con carta">
+    </div>
+    <button type="button" class="next-btn" onclick="goToStep(2)">👆 Toca para ver</button>
+  </div>
+
+  <!-- PASO 2 -->
+  <div id="step-2" class="container hidden">
+    <h1>🎁 Es una invitación para ti</h1>
+    <p class="subtitle">No la vayas a olvidar 🙈💬</p>
+    <div class="card-media">
+      <img src="pensando.jpeg" alt="Pensando pensamientos">
+    </div>
+    <button type="button" class="next-btn" onclick="goToStep(3)">👆 Toca para continuar</button>
+  </div>
+
+  <!-- PASO 3 -->
+  <div id="step-3" class="container hidden">
+    <h1>Ábrelo</h1>
+    <div class="card-media">
+      <img src="3.jpeg" alt="Carta">
+    </div>
+    <button type="button" class="next-btn" onclick="goToStep(4)">👆 Toca para abrir</button>
+  </div>
+
+  <!-- PASO 4 -->
+  <div id="step-4" class="container hidden">
+    <h1>¿Qué dirá?</h1>
+    <div class="card-media">
+      <img src="4.jpeg" alt="Carta cerrada">
+    </div>
+    <button type="button" class="next-btn" onclick="goToStep(5)">👇 Toca para ver la respuesta</button>
+  </div>
+
+  <!-- PASO 5 -->
+  <div id="step-5" class="container hidden">
+    <h1 style="font-size: 28px; margin-top: 20px;">¿Irías a una cita conmigo?</h1>
+    <p style="font-size: 20px;">TE RETO A DARLE AL NO🗣️🗣️</p>
+    
+    <div class="buttons-container">
+      <div class="btn-wrapper">
+        <img src="feliz gato.jpeg" class="avatar-img" alt="Gato feliz">
+        <button type="button" class="btn-yes" onclick="stopAudioAndGoStep(6)">Sí (●'◡'●)</button>
+      </div>
+
+      <div class="btn-wrapper" id="no-container">
+        <button type="button" class="btn-no" id="btn-no" onclick="moveNoButton()">No 🙀</button>
+        <img id="no-reaction-img" src="TRISTEG.jpeg" class="avatar-img" alt="Reacción no">
+      </div>
+    </div>
+
+    <p id="no-text-msg" style="color: #888; font-size: 13px; margin-top: 25px;" class="hidden">¡No tan rápido! 😉</p>
+    <p id="no-warning" style="color: #888; font-size: 12px; margin-top: 5px;" class="hidden">¡No podrás darle al No!</p>
+  </div>
+
+  <!-- PASO 6 -->
+  <div id="step-6" class="container hidden">
+    <h1>¿Cuándo estás libre?</h1>
+    <p class="subtitle">Elige el día y la hora ⏰</p>
+    
+    <div class="form-group">
+      <label>📅 Fecha</label>
+      <input type="date" id="date-input">
+    </div>
+    <div class="form-group">
+      <label>⏰ Hora</label>
+      <input type="time" id="time-input" value="18:00">
+    </div>
+
+    <button type="button" class="next-btn" onclick="saveDateTime()">Siguiente ✨</button>
+  </div>
+
+  <!-- PASO 7 -->
+  <div id="step-7" class="container hidden">
+    <h1>¿Qué se te antoja?</h1>
+    <p class="subtitle">Toca lo que más te guste 😋</p>
+
+    <div class="food-grid">
+      <div class="food-item" onclick="toggleFood(this, 'Pizza')">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200" alt="Pizza">
+        <span>Pizza</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Tacos')">
+        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=200" alt="Tacos">
+        <span>Tacos</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Hamburguesa')">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" alt="Hamburguesa">
+        <span>Hamburguesa</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Micheladas')">
+        <img src="miche.jpeg" alt="Micheladas">
+        <span>Micheladas</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Postre')">
+        <img src="FLAN.jpeg" alt="Postre">
+        <span>Postre</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Alitas')">
+        <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=200" alt="Alitas">
+        <span>Alitas</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Boneless')">
+        <img src="boneless.jpeg" alt="Boneless">
+        <span>Boneless</span>
+      </div>
+      <div class="food-item" onclick="toggleFood(this, 'Café')">
+        <img src="cafe.jpeg" alt="Café">
+        <span>Café</span>
+      </div>
+    </div>
+
+    <button type="button" class="next-btn" onclick="finishFoodSelection()">Listo ✨</button>
+  </div>
+
+  <!-- PASO 8 -->
+  <div id="step-8" class="container hidden">
+    <h1>Nuestra cita está lista! ❣️</h1>
+    <p class="subtitle">Esto es lo que elegiste</p>
+
+    <div class="summary-box">
+      <div class="summary-item">
+        <span class="summary-label">🍹 Comida</span>
+        <span class="summary-value" id="summary-food">Por definir</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">📅 Día</span>
+        <span class="summary-value" id="summary-date">Pendiente</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">⏰ Hora</span>
+        <span class="summary-value" id="summary-time">Pendiente</span>
+      </div>
+    </div>
+
+    <p style="font-weight: bold; font-size: 14px; margin-bottom: 5px;">⌛ Cuenta regresiva</p>
+    <div class="countdown">
+      <div class="time-block"><span class="num" id="cd-days">00</span><span class="label">Días</span></div>
+      <div class="time-block"><span class="num" id="cd-hours">00</span><span class="label">Horas</span></div>
+      <div class="time-block"><span class="num" id="cd-mins">00</span><span class="label">Min</span></div>
+      <div class="time-block"><span class="num" id="cd-secs">00</span><span class="label">Seg</span></div>
+    </div>
+
+    <p style="font-weight: bold; font-size: 14px; margin-top: 20px; text-align: left;">📍 Lugar de la cita</p>
+    <div class="map-container">
+      <iframe 
+        width="100%" 
+        height="100%" 
+        style="border:0;" 
+        loading="lazy" 
+        allowfullscreen 
+        src="https://maps.google.com/maps?q=Plaza%20Las%20Americas%20Morelia&t=&z=15&ie=UTF8&iwloc=&output=embed">
+      </iframe>
+    </div>
+
+    <p style="color: var(--primary-color); font-weight: bold; margin-top: 15px; font-size: 18px;">YO PASO POR TII!🏠🚗🚗</p>
+    <p style="color: #666; font-size: 13px; margin-top: 5px;">Favor de enviar esta captura de pantalla a Gersa 📸✨</p>
+
+    <button type="button" class="next-btn" style="background-color: #25d366; margin-top: 12px;" onclick="shareOnWhatsApp()">
+      Compartir por WhatsApp 💬
+    </button>
+  </div>
+
+  <script>
+    let selectedFoods = [];
+    let selectedDate = '';
+    let selectedTime = '';
+    let countdownInterval;
+
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    document.getElementById('date-input').value = today.toISOString().split('T')[0];
+
+    function goToStep(stepNumber) {
+      document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+      const nextStep = document.getElementById(`step-${stepNumber}`);
+      if (nextStep) {
+        nextStep.classList.remove('hidden');
+      }
+    }
+
+    function stopAudioAndGoStep(stepNumber) {
+      const audio = document.getElementById('crying-audio');
+      if(audio){
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      goToStep(stepNumber);
+    }
+
+    const noImages = [
+      "perro.jpeg",
+      "riendo2.jpeg",
+      "gato.jpeg"
+    ];
+    let noClickCount = 0;
+
+    function moveNoButton() {
+      const noContainer = document.getElementById('no-container');
+      const textMsg = document.getElementById('no-text-msg');
+      const warning = document.getElementById('no-warning');
+      const reactionImg = document.getElementById('no-reaction-img');
+      const audio = document.getElementById('crying-audio');
+
+      if(audio){
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log("Audio no listo"));
+      }
+
+      textMsg.classList.remove('hidden');
+      warning.classList.remove('hidden');
+
+      noClickCount++;
+      reactionImg.src = noImages[noClickCount % noImages.length];
+      
+      const x = Math.random() * (window.innerWidth - 150);
+      const y = Math.random() * (window.innerHeight - 80);
+      
+      noContainer.style.position = 'fixed';
+      noContainer.style.left = `${x}px`;
+      noContainer.style.top = `${y}px`;
+    }
+
+    function toggleFood(element, foodName) {
+      element.classList.toggle('selected');
+      if (selectedFoods.includes(foodName)) {
+        selectedFoods = selectedFoods.filter(item => item !== foodName);
+      } else {
+        selectedFoods.push(foodName);
+      }
+    }
+
+    function saveDateTime() {
+      const dateVal = document.getElementById('date-input').value;
+      const timeVal = document.getElementById('time-input').value;
+
+      if (!dateVal || !timeVal) {
+        alert('Por favor selecciona una fecha y una hora.');
+        return;
+      }
+
+      selectedDate = dateVal;
+      selectedTime = timeVal;
+
+      try {
+        const [year, month, day] = dateVal.split('-');
+        document.getElementById('summary-date').innerText = `${day}/${month}/${year}`;
+        document.getElementById('summary-time').innerText = timeVal;
+      } catch (e) {
+        document.getElementById('summary-date').innerText = dateVal;
+        document.getElementById('summary-time').innerText = timeVal;
+      }
+
+      goToStep(7);
+    }
+
+    function finishFoodSelection() {
+      if (selectedFoods.length > 0) {
+        document.getElementById('summary-food').innerText = selectedFoods.join(', ');
+      } else {
+        document.getElementById('summary-food').innerText = 'Lo que tú quieras';
+      }
+      goToStep(8);
+      startCountdown();
+    }
+
+    function startCountdown() {
+      if (countdownInterval) clearInterval(countdownInterval);
+      
+      if (!selectedDate) return;
+      const targetDate = new Date(`${selectedDate}T${selectedTime || '18:00'}:00`);
+
+      countdownInterval = setInterval(() => {
+        const now = new Date();
+        const difference = targetDate - now;
+
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((difference / 1000 / 60) % 60);
+          const seconds = Math.floor((difference / 1000) % 60);
+
+          document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+          document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+          document.getElementById('cd-mins').innerText = String(minutes).padStart(2, '0');
+          document.getElementById('cd-secs').innerText = String(seconds).padStart(2, '0');
+        } else {
+          document.getElementById('cd-days').innerText = '00';
+          document.getElementById('cd-hours').innerText = '00';
+          document.getElementById('cd-mins').innerText = '00';
+          document.getElementById('cd-secs').innerText = '00';
+        }
+      }, 1000);
+    }
+
+    function shareOnWhatsApp() {
+      const miNumero = "5214431234567"; // Pon tu número aquí
+
+      let foodText = selectedFoods.length > 0 ? selectedFoods.join(', ') : 'Lo que tú quieras';
+      
+      const mensaje = `¡Hola Gersa! 💖%0A%0AYa elegí los detalles para nuestra cita:%0A📅 Día: ${document.getElementById('summary-date').innerText}%0A⏰ Hora: ${selectedTime}%0A😋 Comida: ${foodText}%0A%0A¡Ya tengo lista la captura! 📸✨`;
+
+      window.open(`https://api.whatsapp.com/send?phone=${miNumero}&text=${mensaje}`, '_blank');
+    }
+  </script>
+</body>
+</html>
